@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateViewsTable extends Migration
+class CreateUserAgentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateViewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('views', function (Blueprint $table) {
+        Schema::create('user_agents', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamps();
-            $table->integer('site_id')->unsigned();
-            $table->foreign('site_id')->references('id')->on('sites');
+            $table->string('name');
         });
     }
 
@@ -28,6 +27,6 @@ class CreateViewsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('views');
+        Schema::dropIfExists('user_agents');
     }
 }
