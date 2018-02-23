@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Site;
 use App\UserAgent;
+use App\Page;
 
 class TrackViewTest extends TestCase
 {
@@ -81,42 +82,65 @@ class TrackViewTest extends TestCase
 
 
     /** @test */
-    public function a_page_view_updates_the_daily_count()
+    public function a_page_view_logs_the_correct_referring_page()
     {
         // Arrange
-        
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
+
         // Act
-        $response = $this->get( '/track/example.com' );
+        $response = $this->withHeaders([
+            'user-agent' => 'Mozilla/5.0',
+            'referer' => 'https://example.com/test-page',
+        ])->get( '/track/example.com' );
 
         // Assert
-        $this->assertTrue(true);
+        $this->assertDatabaseHas( 'pages', [ 'url' => 'https://example.com/test-page' ] );
+        $page = Page::where('url', 'https://example.com/test-page')->firstOrFail();
+        $this->assertDatabaseHas( 'views', [
+            'site_id' => $site->id,
+            'page_id' => $page->id ]);
     }
 
 
     /** @test */
-    public function a_page_view_updates_the_hourly_count()
-    {
-        // Arrange
+    // public function a_page_view_updates_the_daily_count()
+    // {
+    //     // Arrange
         
-        // Act
-        $response = $this->get( '/track/example.com' );
+    //     // Act
+    //     $response = $this->get( '/track/example.com' );
 
-        // Assert
-        $this->assertTrue(true);
-    }
+    //     // Assert
+    //     $this->assertTrue(true);
+    // }
 
 
-    /** @test */
-    public function a_page_view_updates_the_minute_count()
-    {
-        // Arrange
+    // /** @test */
+    // public function a_page_view_updates_the_hourly_count()
+    // {
+    //     // Arrange
         
-        // Act
-        $response = $this->get( '/track/example.com' );
+    //     // Act
+    //     $response = $this->get( '/track/example.com' );
 
-        // Assert
-        $this->assertTrue(true);
-    }
+    //     // Assert
+    //     $this->assertTrue(true);
+    // }
+
+
+    // /** @test */
+    // public function a_page_view_updates_the_minute_count()
+    // {
+    //     // Arrange
+        
+    //     // Act
+    //     $response = $this->get( '/track/example.com' );
+
+    //     // Assert
+    //     $this->assertTrue(true);
+    // }
 
 
 }

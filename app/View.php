@@ -15,4 +15,8 @@ class View extends Model
         return $this->belongsTo( UserAgent::class );
     }
 
+    function page() {
+        return $this->belongsTo( Page::class );
+    }
+
 }

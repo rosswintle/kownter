@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Site;
 use App\View;
 use App\UserAgent;
+use App\Page;
 
 class ViewController extends Controller
 {
@@ -18,8 +19,14 @@ class ViewController extends Controller
 
         $userAgentName = $request->header('user-agent');
         $userAgent = UserAgent::firstOrCreate([ 'name' => $userAgentName ]);
-
         $view->user_agent()->associate($userAgent);
+
+        $refererUrl = $request->header('referer');
+        if ( $refererUrl ) {
+            $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
+            $view->page()->associate($page);
+        }
+
         $view->save();
 
         return '';
