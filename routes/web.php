@@ -15,8 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/track/{domain}', 'ViewController@track');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::middleware('auth')->group( function () {
+    Route::get('/site/{site}/', 'SiteController@show');
+});
+
+Route::get('/track/{domain}', 'ViewController@track');

@@ -44,9 +44,14 @@ class SiteController extends Controller
      * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function show(Site $site)
+    public function show($site)
     {
-        //
+        $site = Site::with(['views', 'views.page', 'views.user_agent', 'views.site'])
+            ->findOrFail($site);
+
+        return view('site.show', [
+            'site' => $site,
+        ]);
     }
 
     /**
