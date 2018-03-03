@@ -88,6 +88,25 @@ class TrackViewTest extends TestCase
 
 
     /** @test */
+    public function a_page_view_sends_a_CORS_header()
+    {
+        // Arrange
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
+
+        // Act
+        $response = $this->withHeaders([
+            'Referer' => 'https://example.com/test-page',
+            'Origin' => 'https://example.com'
+        ])->get('/track');
+
+        // Assert
+        $response->assertHeader('Access-Control-Allow-Origin', 'https://example.com');
+    }
+
+
+    /** @test */
     public function a_page_view_logs_the_correct_referring_page()
     {
         // Arrange

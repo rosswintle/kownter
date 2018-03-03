@@ -38,7 +38,8 @@ class ViewController extends Controller
 
         $view->save();
 
-        return '';
+        return response('')
+            ->header('Access-Control-Allow-Origin', $request->header('origin') );
     }
 
 }
