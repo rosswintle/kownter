@@ -15,7 +15,7 @@ class AddCreatedTimestampToViews extends Migration
     {
         Schema::table('views', function (Blueprint $table) {
             // TODO: I'd like this to not be nullable
-            $table->timestamp( 'created_timestamp' )->nullable();
+            $table->integer( 'created_timestamp' )->unsigned()->nullable();
         });
     }
 
