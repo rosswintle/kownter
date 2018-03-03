@@ -23,4 +23,4 @@ Route::middleware('auth')->group( function () {
     Route::get('/site/{site}/', 'SiteController@show');
 });
 
-Route::get('/track/{domain}', 'ViewController@track');
+Route::get('/track/', 'ViewController@track');

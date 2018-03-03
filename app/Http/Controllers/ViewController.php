@@ -11,21 +11,30 @@ use App\Page;
 class ViewController extends Controller
 {
     
-    public function track( Request $request, $domain ) {
+    public function track( Request $request ) {
         $view = new View;
 
-        $site = Site::where( 'domain', $domain )->firstOrFail();
-        $view->site()->associate($site);
+        $refererUrl = $request->header( 'referer' );
+
+        if (! is_string( $refererUrl ) ) {
+            abort( 400 );
+        }
+        
+        $refererDomain = parse_url( $refererUrl, PHP_URL_HOST );
+
+        if (! $refererDomain ) {
+            abort( 404 );
+        }
+
+        $site = Site::where( 'domain', $refererDomain )->firstOrFail();
+        $view->site()->associate( $site );
 
         $userAgentName = $request->header('user-agent');
         $userAgent = UserAgent::firstOrCreate([ 'name' => $userAgentName ]);
         $view->user_agent()->associate($userAgent);
 
-        $refererUrl = $request->header('referer');
-        if ( $refererUrl ) {
-            $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
-            $view->page()->associate($page);
-        }
+        $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
+        $view->page()->associate($page);
 
         $view->save();
 

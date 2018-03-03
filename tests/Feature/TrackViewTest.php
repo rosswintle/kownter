@@ -23,7 +23,9 @@ class TrackViewTest extends TestCase
         ]);
         
         // Act
-        $response = $this->get( '/track/example.com' );
+        $response = $this->withHeaders([
+            'referer' => 'https://example.com/test-page',
+        ])->get( '/track' );
 
         // Assert
         $response->assertStatus( 200 );
@@ -32,16 +34,19 @@ class TrackViewTest extends TestCase
 
 
     /** @test */
-    // public function a_page_view_with_a_referrer_logs_the_referrer()
-    // {
-    //     // Arrange
+    public function a_page_view_with_no_referer_fails()
+    {
+        // Arrange
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
         
-    //     // Act
-    //     $response = $this->get( '/track/example.com' );
+        // Act
+        $response = $this->get( '/track' );
 
-    //     // Assert
-    //     $response->assertStatus( 200 );
-    // }
+        // Assert
+        $response->assertStatus( 400 );
+    }
 
 
     /** @test */
@@ -52,14 +57,14 @@ class TrackViewTest extends TestCase
             'domain' => 'example.com',
         ]);
 
-        
         // Act
-        $response = $this->get( '/track/notawebsite.com' );
+        $response = $this->withHeaders([
+            'referer' => 'https://failure.com/',
+        ])->get( '/track/' );
 
         // Assert
         $response->assertStatus( 404 );
     }
-
 
     /** @test */
     public function a_page_view_logs_the_correct_user_agent()
@@ -71,8 +76,9 @@ class TrackViewTest extends TestCase
 
         // Act
         $response = $this->withHeaders([
+            'referer' => 'https://example.com/',
             'user-agent' => 'Mozilla/5.0'
-        ])->get( '/track/example.com' );
+        ])->get( '/track' );
 
         // Assert
         $this->assertDatabaseHas( 'user_agents', [ 'name' => 'Mozilla/5.0' ] );
@@ -93,7 +99,7 @@ class TrackViewTest extends TestCase
         $response = $this->withHeaders([
             'user-agent' => 'Mozilla/5.0',
             'referer' => 'https://example.com/test-page',
-        ])->get( '/track/example.com' );
+        ])->get( '/track' );
 
         // Assert
         $this->assertDatabaseHas( 'pages', [ 'url' => 'https://example.com/test-page' ] );
