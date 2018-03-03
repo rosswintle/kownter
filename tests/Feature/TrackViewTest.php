@@ -128,6 +128,28 @@ class TrackViewTest extends TestCase
             'page_id' => $page->id ]);
     }
 
+    /** @test */
+    public function a_page_view_sets_a_created_timestamp()
+    {
+        // TODO: Should this be a unit test, with the timestamp being set by an Eloquent event handler?
+        
+        // Arrange
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
+
+        // Act
+        $response = $this->withHeaders([
+            'user-agent' => 'Mozilla/5.0',
+            'referer' => 'https://example.com/test-page',
+        ])->get('/track');
+
+        // Assert
+        $this->assertDatabaseHas('views', [
+            'created_timestamp' => time(), // TODO: There's a TINY chance this could not be the current timestamp
+        ]);
+    }
+
 
     /** @test */
     // public function a_page_view_updates_the_daily_count()

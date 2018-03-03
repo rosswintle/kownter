@@ -36,6 +36,8 @@ class ViewController extends Controller
         $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
         $view->page()->associate($page);
 
+        $view->created_timestamp = time();
+
         $view->save();
 
         return response('')
