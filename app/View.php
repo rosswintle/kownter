@@ -20,4 +20,8 @@ class View extends Model
         return $this->belongsTo( Page::class );
     }
 
+    function referring_domain() {
+        return $this->belongsTo( ReferringDomain::class );
+    }
+
 }

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Site;
 use App\UserAgent;
 use App\Page;
+use App\ReferringDomain;
 
 class TrackViewTest extends TestCase
 {
@@ -147,6 +148,28 @@ class TrackViewTest extends TestCase
         // Assert
         $this->assertDatabaseHas('views', [
             'created_timestamp' => time(), // TODO: There's a TINY chance this could not be the current timestamp
+        ]);
+    }
+
+    /** @test */
+    public function a_page_view_with_a_specified_referer_saves_it()
+    {
+        // Arrange
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
+
+        // Act
+        $response = $this->withHeaders([
+            'user-agent' => 'Mozilla/5.0',
+            'referer' => 'https://example.com/test-page',
+        ])->get('/track?referrer=' . urlencode('https://google.com/'));
+
+        // Assert
+        $this->assertDatabaseHas('referring_domains', [ 'domain' => 'google.com' ] );
+        $referringDomain = ReferringDomain::where('domain', 'google.com')->firstOrFail();
+        $this->assertDatabaseHas('views', [
+            'referring_domain_id' => $referringDomain->id,
         ]);
     }
 

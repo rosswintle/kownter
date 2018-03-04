@@ -7,6 +7,7 @@ use App\Site;
 use App\View;
 use App\UserAgent;
 use App\Page;
+use App\ReferringDomain;
 
 class ViewController extends Controller
 {
@@ -35,6 +36,17 @@ class ViewController extends Controller
 
         $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
         $view->page()->associate($page);
+
+        if ( $request->has('referrer') ) {
+            $sourceReferrer = $request->input('referrer');
+            $sourceReferringDomain = parse_url($sourceReferrer, PHP_URL_HOST);
+            if ( $sourceReferringDomain ) {
+                $sourceReferringDomain = ReferringDomain::firstOrCreate( [ 
+                    'domain' => $sourceReferringDomain,
+                ] );
+                $view->referring_domain()->associate( $sourceReferringDomain );
+            }
+        }
 
         $view->created_timestamp = time();
 
