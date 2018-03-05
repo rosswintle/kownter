@@ -48,8 +48,6 @@ class ViewController extends Controller
             }
         }
 
-        $view->created_timestamp = time();
-
         $view->save();
 
         return response('')
