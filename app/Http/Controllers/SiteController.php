@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Site;
+use App\Page;
 use Illuminate\Http\Request;
+use App\ReferringDomain;
 
 class SiteController extends Controller
 {
@@ -49,8 +51,33 @@ class SiteController extends Controller
         $site = Site::with(['views', 'views.page', 'views.user_agent', 'views.site'])
             ->findOrFail($site);
 
+        $topPages = \DB::table('pages')
+            ->join('views', 'pages.id', '=', 'views.page_id')
+            ->where('views.site_id', '=', $site->id)
+            ->groupBy(['pages.id', 'pages.url'])
+            ->selectRaw('pages.id, pages.url, count(views.id) as views_count')
+            ->get();
+        // Couldn't get this to work with Eloquent. Maybe something like:
+        // $topPages = Page::withCount(['views' => function ($query) use ($site) { 
+        //         $query->where('site_id', $site->id);
+        //     }])
+        //     ->where('views_count', '>', 0)
+        //     ->orderBy('views_count', 'DESC')
+        //     ->limit(10)
+        //     ->get();
+
+        $topReferrers = \DB::table('referring_domains')
+            ->join('views', 'referring_domains.id', '=', 'views.referring_domain_id')
+            ->where('views.site_id', '=', $site->id)
+            ->groupBy(['referring_domains.id', 'referring_domains.domain'])
+            ->selectRaw('referring_domains.id, referring_domains.domain, count(views.id) as views_count')
+            ->get();
+            
+
         return view('site.show', [
             'site' => $site,
+            'topPages' => $topPages,
+            'topReferrers' => $topReferrers,
         ]);
     }
 
