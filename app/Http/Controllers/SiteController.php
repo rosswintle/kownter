@@ -55,6 +55,7 @@ class SiteController extends Controller
             ->join('views', 'pages.id', '=', 'views.page_id')
             ->where('views.site_id', '=', $site->id)
             ->groupBy(['pages.id', 'pages.url'])
+            ->orderByRaw('count(views.id) DESC')
             ->selectRaw('pages.id, pages.url, count(views.id) as views_count')
             ->get();
         // Couldn't get this to work with Eloquent. Maybe something like:
@@ -70,7 +71,8 @@ class SiteController extends Controller
             ->join('views', 'referring_domains.id', '=', 'views.referring_domain_id')
             ->where('views.site_id', '=', $site->id)
             ->groupBy(['referring_domains.id', 'referring_domains.domain'])
-            ->selectRaw('referring_domains.id, referring_domains.domain, count(views.id) as views_count')
+            ->orderByRaw('count(views.id) DESC')
+           ->selectRaw('referring_domains.id, referring_domains.domain, count(views.id) as views_count')
             ->get();
             
 
