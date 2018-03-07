@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class View extends Model
 {
@@ -22,6 +23,16 @@ class View extends Model
 
     function referring_domain() {
         return $this->belongsTo( ReferringDomain::class );
+    }
+
+    function scopeDaily( $query ) {
+        $yesterday = new Carbon('-24 hours');
+        return $query->where('created_at', '>', $yesterday->toDateTimeString());
+    }
+
+    function scopeWeekly($query) {
+        $lastWeek = new Carbon('-1 week');
+        return $query->where('created_at', '>', $lastWeek->toDateTimeString());
     }
 
 }

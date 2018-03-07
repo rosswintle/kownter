@@ -17,29 +17,29 @@
                     <div class="card-deck">
                         
                         <div class="card">
+                            <div class="card-header">
+                                Views today
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">
-                                    All views
-                                </h5>
-                                {{ $site->views->count() }}
+                                {{ $dayViews }}
                             </div>
                         </div>
 
                         <div class="card">
+                            <div class="card-header">
+                                Views this week
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">
-                                    All views
-                                </h5>
-                                {{ $site->views->count() }}
+                                {{ $weekViews }}
                             </div>
                         </div>
 
                         <div class="card">
+                            <div class="card-header">
+                                All views
+                            </div>
                             <div class="card-body">
-                                <h5 class="card-title">
-                                    All views
-                                </h5>
-                                {{ $site->views->count() }}
+                                {{ $allViews }}
                             </div>
                         </div>
 
@@ -55,12 +55,16 @@
                                 <ul>
                                     @foreach ( $topPages as $page )
                                         <li>
-                                            {{ $page->url }}: {{ $page->views_count }} hits
+                                            {{ $page->path }}: {{ $page->views_count }} hits
                                         </li>
                                     @endforeach
                                 </ul>
                             </div>
                         </div>
+
+                    </div>
+
+                    <div class="card-deck">
 
                         <div class="card">
                             <div class="card-header">
@@ -76,6 +80,22 @@
                                 </ul>
                             </div>
                         </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                Top browsers
+                            </div>
+                            <div class="card-body">
+                                <ul>
+                                    @foreach ( $topBrowsers as $browser )
+                                        <li>
+                                            {{ $browser->name }}: {{ $browser->views_count }} hits
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+
                     </div>
 
 <ul>
