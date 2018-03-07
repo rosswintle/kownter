@@ -38,6 +38,19 @@
                             <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                         @else
                             <li class="nav-item dropdown">
+                                <a id="navbarSites" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Sites <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu" aria-labelledby="navbarSites">
+                                    @foreach ( $sites as $site )
+                                        <a class="dropdown-item" href="{{ action( 'SiteController@show', [ 'site' => $site ] ) }}">
+                                            {{ $site->domain }}
+                                        </a>
+                                    @endforeach
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     {{ Auth::user()->name }} <span class="caret"></span>
                                 </a>
