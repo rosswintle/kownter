@@ -35,6 +35,9 @@ class ViewController extends Controller
         $view->user_agent()->associate($userAgent);
 
         $page = Page::firstOrCreate([ 'url' => $refererUrl ]);
+        $page->site()->associate($site);
+        $page->save();
+        
         $view->page()->associate($page);
 
         if ( $request->has('referrer') ) {

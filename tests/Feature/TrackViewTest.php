@@ -122,11 +122,14 @@ class TrackViewTest extends TestCase
         ])->get( '/track' );
 
         // Assert
-        $this->assertDatabaseHas( 'pages', [ 'url' => 'https://example.com/test-page' ] );
+        $this->assertDatabaseHas( 'pages', [
+            'url' => 'https://example.com/test-page',
+            'site_id' => $site->id,
+        ] );
         $page = Page::where('url', 'https://example.com/test-page')->firstOrFail();
         $this->assertDatabaseHas( 'views', [
             'site_id' => $site->id,
-            'page_id' => $page->id ]);
+            'page_id' => $page->id ] );
     }
 
     /** @test */

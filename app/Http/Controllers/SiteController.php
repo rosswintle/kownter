@@ -62,7 +62,7 @@ class SiteController extends Controller
 
         $topPages = \DB::table('pages')
             ->join('views', 'pages.id', '=', 'views.page_id')
-            ->where('views.site_id', '=', $site->id)
+            ->where('pages.site_id', '=', $site->id)
             ->groupBy(['pages.id', 'pages.url'])
             ->orderByRaw('count(views.id) DESC')
             ->selectRaw('pages.id, pages.url, count(views.id) as views_count')
