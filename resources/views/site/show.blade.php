@@ -18,7 +18,7 @@
                         
                         <div class="card">
                             <div class="card-header">
-                                Views today
+                                24 hours
                             </div>
                             <div class="card-body">
                                 {{ $dayViews }}
@@ -27,7 +27,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                Views this week
+                                7 days
                             </div>
                             <div class="card-body">
                                 {{ $weekViews }}
@@ -36,7 +36,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                All views
+                                All time
                             </div>
                             <div class="card-body">
                                 {{ $allViews }}
@@ -45,39 +45,59 @@
 
                     </div>
 
-                    <div class="card-deck">
+                    <div class="card-deck mt-3">
 
                         <div class="card">
                             <div class="card-header">
                                 Top pages
                             </div>
                             <div class="card-body">
-                                <ul>
-                                    @foreach ( $topPages as $page )
-                                        <li>
-                                            {{ $page->path }}: {{ $page->views_count }} hits
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Page</th>
+                                            <th scope="col">Views</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach ( $topPages as $page )
+                                            <tr>
+                                                <td>{{ $page->path }}</td>
+                                                <td>{{ $page->views_count }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="card-deck">
+                    <div class="card-deck mt-3">
 
                         <div class="card">
                             <div class="card-header">
                                 Top referrers
                             </div>
                             <div class="card-body">
-                                <ul>
-                                    @foreach ( $topReferrers as $referrer )
-                                        <li>
-                                            {{ $referrer->domain }}: {{ $referrer->views_count }} hits
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Referrer</th>
+                                            <th scope="col">Views</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ( $topReferrers as $referrer )
+                                            <tr>
+                                                <td>{{ $referrer->domain }}</td>
+                                                <td>{{ $referrer->views_count }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -86,27 +106,63 @@
                                 Top browsers
                             </div>
                             <div class="card-body">
-                                <ul>
-                                    @foreach ( $topBrowsers as $browser )
-                                        <li>
-                                            {{ $browser->name }}: {{ $browser->views_count }} hits
-                                        </li>
-                                    @endforeach
-                                </ul>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Browser</th>
+                                            <th scope="col">Views</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach ( $topBrowsers as $browser )
+                                            <tr>
+                                                <td>{{ $browser->name }}</td>
+                                                <td>{{ $browser->views_count }}</td>
+                                            </tr>
+                                        @endforeach
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
                     </div>
 
-<ul>
-@foreach( $site->views as $view )
-    <li>Time: {{ $view->created_at }}
-        Page: {{ $view->page ? $view->page->url : 'None' }},
-        UA: {{ $view->user_agent->name }},
-        Referrer: {{ $view->referring_domain ? $view->referring_domain->domain : 'None' }}
-    </li>
-@endforeach
-</ul>
+                    <div class="card-deck mt-3">
+
+                        <div class="card">
+                            <div class="card-header">
+                                Recent views
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Time</th>
+                                            <th scope="col">Page</th>
+                                            <th scope="col">Browser</th>
+                                            <th scope="col">Referrer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                        @foreach( $site->views->reverse() as $view )
+                                            <tr>
+                                                <td>{{ $view->created_at }}</td>
+                                                <td>{{ $view->page ? $view->page->url : 'None' }}</td>
+                                                <td>{{ $view->user_agent->name }}</td>
+                                                <td>{{ $view->referring_domain ? $view->referring_domain->domain : 'None' }}</td>
+                                            </tr>
+                                        @endforeach
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </div>
