@@ -50,7 +50,7 @@ class SiteController extends Controller
     public function show($site)
     {
         $site = Site::with([
-            'views' => function ($query) { return $query->limit(20); }, 
+            'views' => function ($query) { return $query->limit(20)->orderBy('created_at', 'DESC'); }, 
             'views.page', 
             'views.user_agent', 
             'views.site'])
@@ -70,6 +70,7 @@ class SiteController extends Controller
 
         $topPages = $topPages->map( function( $page ) {
             $page->path = parse_url( $page->url, PHP_URL_PATH );
+            $page->domain = parse_url( $page->url, PHP_URL_HOST );
             return $page;
         }, $topPages );
 

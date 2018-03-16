@@ -63,7 +63,10 @@
 
                                         @foreach ( $topPages as $page )
                                             <tr>
-                                                <td>{{ $page->path }}</td>
+                                                <td>
+                                                    {{ $page->path }}<br>
+                                                    <small class="text-muted">{{ $page->domain }}</small>
+                                                </td>
                                                 <td>{{ $page->views_count }}</td>
                                             </tr>
                                         @endforeach
@@ -147,7 +150,7 @@
                                     </thead>
                                     <tbody>
 
-                                        @foreach( $site->views->reverse() as $view )
+                                        @foreach( $site->views as $view )
                                             <tr>
                                                 <td>{{ $view->created_at }}</td>
                                                 <td>{{ $view->page ? $view->page->url : 'None' }}</td>
