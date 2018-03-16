@@ -27,7 +27,8 @@ class ViewController extends Controller
             abort( 404 );
         }
 
-        $site = Site::where( 'domain', $refererDomain )->firstOrFail();
+        $site = $this->checkDomain( $refererDomain );
+
         $view->site()->associate( $site );
 
         $userAgentName = $request->header('user-agent');
@@ -55,6 +56,34 @@ class ViewController extends Controller
 
         return response('')
             ->header('Access-Control-Allow-Origin', $request->header('origin') );
+    }
+
+
+    private function checkDomain( $refererDomain, $checkSubdomain = true )
+    {
+        $sites = Site::where('domain', $refererDomain)->get();
+
+        if ($sites->count() == 0) {
+            if ( $checkSubdomain ) {
+                return $this->checkForSubdomain( $refererDomain );
+            } else {
+                abort(404, 'Could not find site from referer - this site is not tracked');
+            }
+        }
+
+        return $sites->first();
+    }
+
+    private function checkForSubdomain( $refererDomain )
+    {
+        $hostParts = explode( '.', $refererDomain );
+        
+        if ( count( $hostParts ) > 2 ) {
+            $domain = implode( '.', array_slice( $hostParts, 1 ) );
+            return $this->checkDomain( $domain, false );
+        }
+
+        abort(404, 'Could not find site from referer - this site is not tracked');
     }
 
 }

@@ -68,6 +68,25 @@ class TrackViewTest extends TestCase
     }
 
     /** @test */
+    public function a_page_view_for_a_subdomain_is_logged()
+    {
+        // Arrange - this is not strictly necessary but...
+        $site = Site::create([
+            'domain' => 'example.com',
+        ]);
+
+        // Act
+        $response = $this->withHeaders([
+            'referer' => 'https://subdomain.example.com/',
+        ])->get( '/track/' );
+
+        // Assert
+        $response->assertStatus( 200 );
+        $this->assertDatabaseHas('views', ['site_id' => $site->id]);
+
+    }
+
+    /** @test */
     public function a_page_view_logs_the_correct_user_agent()
     {
         // Arrange
