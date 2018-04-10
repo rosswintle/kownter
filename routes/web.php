@@ -24,3 +24,20 @@ Route::middleware('auth')->group( function () {
 });
 
 Route::get('/track/', 'ViewController@track');
+
+
+/*
+ |--------------------------------------------------------------------------
+ | Cookie-based API routes
+ |--------------------------------------------------------------------------
+ |
+ | These routes are for the web-app API. They don't need formal auth and
+ | just use cookie auth
+ |
+ */
+
+ Route::group( [ 'prefix' => '/api/v1', 'middleware' => 'auth' ], function () {
+    
+    Route::get('/site/{site}/top-pages/week', 'TopPagesApiController@showWeek');
+
+ } );
