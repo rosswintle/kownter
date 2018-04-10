@@ -15,7 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+Vue.component('top-pages-table', require('./components/TopPagesTable.vue'));
+Vue.component('pages-row', require('./components/PagesRow.vue'));
 
 const app = new Vue({
     el: '#app'

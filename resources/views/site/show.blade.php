@@ -52,27 +52,9 @@
                                 Top pages
                             </div>
                             <div class="card-body">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Page</th>
-                                            <th scope="col">Views</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
 
-                                        @foreach ( $topPages as $page )
-                                            <tr>
-                                                <td>
-                                                    {{ $page->path }}<br>
-                                                    <small class="text-muted">{{ $page->domain }}</small>
-                                                </td>
-                                                <td>{{ $page->views_count }}</td>
-                                            </tr>
-                                        @endforeach
+                                    <top-pages-table site="{{ $site->id }}"></top-pages-table>
 
-                                    </tbody>
-                                </table>
                             </div>
                         </div>
 
