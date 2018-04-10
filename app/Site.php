@@ -11,4 +11,8 @@ class Site extends Model
     function views() {
         return $this->hasMany( \App\View::class );
     }
+
+    function pages() {
+        return $this->hasMany( \App\Page::class );
+    }
 }
