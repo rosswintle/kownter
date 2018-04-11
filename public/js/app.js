@@ -47068,12 +47068,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['site'],
     data: function data() {
         return {
-            topPages: []
+            topPages: [],
+            topPagesWeek: [],
+            timePeriod: 'all'
         };
     },
     mounted: function mounted() {
@@ -47084,7 +47096,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this.topPages = pages;
             });
         });
-        console.log('Component mounted.');
+        fetch('/api/v1/site/' + this.site + '/top-pages/week', { credentials: "same-origin" }).then(function (response) {
+            response.json().then(function (pages) {
+                _this.topPagesWeek = pages;
+            });
+        });
     }
 });
 
@@ -47096,18 +47112,60 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("table", { staticClass: "table" }, [
-    _vm._m(0),
+  return _c("div", [
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        on: {
+          click: function($event) {
+            _vm.timePeriod = "all"
+          }
+        }
+      },
+      [_vm._v("All time")]
+    ),
     _vm._v(" "),
     _c(
-      "tbody",
-      _vm._l(_vm.topPages, function(page) {
-        return _c("pages-row", {
-          key: page.id,
-          attrs: { url: page.url, count: page.views_count }
-        })
-      })
-    )
+      "button",
+      {
+        staticClass: "btn btn-primary",
+        on: {
+          click: function($event) {
+            _vm.timePeriod = "week"
+          }
+        }
+      },
+      [_vm._v("7 days")]
+    ),
+    _vm._v(" "),
+    _c("table", { staticClass: "table" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "tbody",
+        [
+          _vm._l(_vm.topPages, function(page) {
+            return _vm.timePeriod == "all"
+              ? _c("pages-row", {
+                  key: page.id,
+                  attrs: { url: page.url, count: page.views_count }
+                })
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.topPagesWeek, function(page) {
+            return _vm.timePeriod == "week"
+              ? _c("pages-row", {
+                  key: page.id,
+                  attrs: { url: page.url, count: page.views_count }
+                })
+              : _vm._e()
+          })
+        ],
+        2
+      )
+    ])
   ])
 }
 var staticRenderFns = [
