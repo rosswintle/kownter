@@ -47079,7 +47079,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        fetch('/api/v1/site/' + this.site + '/top-pages/week', { credentials: "same-origin" }).then(function (response) {
+        fetch('/api/v1/site/' + this.site + '/top-pages', { credentials: "same-origin" }).then(function (response) {
             response.json().then(function (pages) {
                 _this.topPages = pages;
             });

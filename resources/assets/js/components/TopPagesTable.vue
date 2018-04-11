@@ -28,7 +28,7 @@
             }
         },
         mounted() {
-            fetch('/api/v1/site/' + this.site + '/top-pages/week', { credentials: "same-origin" })
+            fetch('/api/v1/site/' + this.site + '/top-pages', { credentials: "same-origin" })
             .then( response => {
                 response.json()
                     .then( pages => {
