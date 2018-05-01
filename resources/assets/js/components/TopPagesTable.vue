@@ -1,8 +1,9 @@
 <template>
-    <div>
-        <button class="btn btn-primary" v-on:click="timePeriod='all'">All time</button>
-        <button class="btn btn-primary" v-on:click="timePeriod='week'" >7 days</button>
-
+    <div class="table-container">
+        <div class="table-buttons">
+            <button :class="{'btn': true, 'btn-primary': true, 'btn-outline-primary': timePeriod != 'all' }" v-on:click="timePeriod='all'">All time</button>
+            <button :class="{'btn': true, 'btn-primary': true, 'btn-outline-primary': timePeriod != 'week' }" v-on:click="timePeriod='week'" >7 days</button>
+        </div>
         <table class="table">
             <thead>
                 <tr>
