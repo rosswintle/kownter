@@ -6,6 +6,7 @@ use App\Site;
 use App\Page;
 use App\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\ReferringDomain;
 
 class SiteController extends Controller
@@ -47,14 +48,18 @@ class SiteController extends Controller
      * @param  \App\Site  $site
      * @return \Illuminate\Http\Response
      */
-    public function show($site)
+    public function show( Site $site )
     {
+        if ( Auth::id() != $site->owner->id ) {
+            abort(401);
+        }
+
         $site = Site::with([
             'views' => function ($query) { return $query->limit(20)->orderBy('created_at', 'DESC'); }, 
             'views.page', 
             'views.user_agent', 
             'views.site'])
-            ->findOrFail($site);
+            ->findOrFail($site->id);
 
         $dayViews = View::daily()->where('site_id', $site->id)->count();
         $weekViews = View::weekly()->where('site_id', $site->id)->count();

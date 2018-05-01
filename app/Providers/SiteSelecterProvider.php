@@ -16,7 +16,7 @@ class SiteSelecterProvider extends ServiceProvider
     public function boot()
     {
         View::composer( 'layouts.app', function ( $view ) {
-            $sites = Site::all();
+            $sites = Site::user()->get(); 
             $view->with( 'sites', $sites );
         } );
     }
