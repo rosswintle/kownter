@@ -14,8 +14,14 @@ class UserAgent extends Model
     }
 
     function addDetails() {
+
+        if ($this->browser_type) {
+            return $this;
+        }
+
         $dd = new DeviceDetector( $this->name );
         $dd->parse();
+
         $client = $dd->getClient();
         $this->is_bot = $dd->isBot();
         if ($dd->isBot()) {
@@ -34,7 +40,9 @@ class UserAgent extends Model
             $this->os_version = $os['version'];
             $this->os_platform = $os['platform'];
         }
+
         $this->save();
+
         return $this;
     }
 }
