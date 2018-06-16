@@ -94,14 +94,16 @@ class SiteController extends Controller
             ->groupBy(['referring_domains.id', 'referring_domains.domain'])
             ->orderByRaw('count(views.id) DESC')
             ->selectRaw('referring_domains.id, referring_domains.domain, count(views.id) as views_count')
+            ->limit(20)
             ->get();
             
         $topBrowsers = \DB::table('user_agents')
             ->join('views', 'user_agents.id', '=', 'views.user_agent_id')
             ->where('views.site_id', '=', $site->id)
-            ->groupBy(['user_agents.id', 'user_agents.name'])
+            ->groupBy(['user_agents.id', 'user_agents.name', 'user_agents.browser_name', 'user_agents.browser_version'])
             ->orderByRaw('count(views.id) DESC')
-            ->selectRaw('user_agents.id, user_agents.name, count(views.id) as views_count')
+            ->selectRaw('user_agents.id, user_agents.name, user_agents.browser_name, user_agents.browser_version, count(views.id) as views_count')
+            ->limit(20)
             ->get();
             
 

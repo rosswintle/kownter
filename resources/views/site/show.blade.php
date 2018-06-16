@@ -64,7 +64,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                Top referrers
+                                Top 20 referrers (all time)
                             </div>
                             <div class="card-body">
                                 <table class="table">
@@ -88,7 +88,7 @@
 
                         <div class="card">
                             <div class="card-header">
-                                Top browsers
+                                Top 20 browsers (all time)
                             </div>
                             <div class="card-body">
                                 <table class="table">
@@ -102,7 +102,7 @@
 
                                         @foreach ( $topBrowsers as $browser )
                                             <tr>
-                                                <td>{{ $browser->name }}</td>
+                                                <td>{{ $browser->browser_name . " " . $browser->browser_version }}</td>
                                                 <td>{{ $browser->views_count }}</td>
                                             </tr>
                                         @endforeach
@@ -136,7 +136,7 @@
                                             <tr>
                                                 <td>{{ $view->created_at }}</td>
                                                 <td>{{ $view->page ? $view->page->url : 'None' }}</td>
-                                                <td>{{ $view->user_agent->name }}</td>
+                                                <td>{{ $view->user_agent->browser_name . " " . $view->user_agent->browser_version }}</td>
                                                 <td>{{ $view->referring_domain ? $view->referring_domain->domain : 'None' }}</td>
                                             </tr>
                                         @endforeach
