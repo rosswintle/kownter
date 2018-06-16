@@ -47066,6 +47066,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['site'],
@@ -47073,6 +47079,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             topPages: [],
             topPagesWeek: [],
+            topPagesDay: [],
             timePeriod: 'all'
         };
     },
@@ -47087,6 +47094,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         fetch('/api/v1/site/' + this.site + '/top-pages/week', { credentials: "same-origin" }).then(function (response) {
             response.json().then(function (pages) {
                 _this.topPagesWeek = pages;
+            });
+        });
+        fetch('/api/v1/site/' + this.site + '/top-pages/day', { credentials: "same-origin" }).then(function (response) {
+            response.json().then(function (pages) {
+                _this.topPagesDay = pages;
             });
         });
     }
@@ -47134,6 +47146,23 @@ var render = function() {
           }
         },
         [_vm._v("7 days")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          class: {
+            btn: true,
+            "btn-primary": true,
+            "btn-outline-primary": _vm.timePeriod != "day"
+          },
+          on: {
+            click: function($event) {
+              _vm.timePeriod = "day"
+            }
+          }
+        },
+        [_vm._v("24 hours")]
       )
     ]),
     _vm._v(" "),
@@ -47154,6 +47183,15 @@ var render = function() {
           _vm._v(" "),
           _vm._l(_vm.topPagesWeek, function(page) {
             return _vm.timePeriod == "week"
+              ? _c("pages-row", {
+                  key: page.id,
+                  attrs: { url: page.url, count: page.views_count }
+                })
+              : _vm._e()
+          }),
+          _vm._v(" "),
+          _vm._l(_vm.topPagesDay, function(page) {
+            return _vm.timePeriod == "day"
               ? _c("pages-row", {
                   key: page.id,
                   attrs: { url: page.url, count: page.views_count }

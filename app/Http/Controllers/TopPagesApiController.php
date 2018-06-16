@@ -20,4 +20,9 @@ class TopPagesApiController extends Controller
         return TopPages::getWeek( $site );
     }
 
+    function showDay( Site $site )
+    {
+        return TopPages::getDay( $site );
+    }
+
 }
