@@ -16,6 +16,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+// Disable register
+Route::match(['get', 'post'], 'register', function(){
+    return redirect('/');
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 
