@@ -14,13 +14,13 @@ class AddDetailColumnsToUserAgents extends Migration
     public function up()
     {
         Schema::table('user_agents', function (Blueprint $table) {
-            $table->boolean('is_bot');
-            $table->string('browser_type');
-            $table->string('browser_name');
-            $table->string('browser_version');
-            $table->string('os_name');
-            $table->string('os_version');
-            $table->string('os_platform');
+            $table->boolean('is_bot')->default(false);
+            $table->string('browser_type')->nullable();
+            $table->string('browser_name')->nullable();
+            $table->string('browser_version')->nullable();
+            $table->string('os_name')->nullable();
+            $table->string('os_version')->nullable();
+            $table->string('os_platform')->nullable();
         });
     }
 
