@@ -33,6 +33,7 @@ class ViewController extends Controller
 
         $userAgentName = $request->header('user-agent');
         $userAgent = UserAgent::firstOrCreate([ 'name' => $userAgentName ]);
+        $userAgent->addDetails();
         $view->user_agent()->associate($userAgent);
 
         $page = Page::firstOrCreate([ 'url' => $refererUrl ]);

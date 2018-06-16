@@ -97,12 +97,18 @@ class TrackViewTest extends TestCase
         // Act
         $response = $this->withHeaders([
             'referer' => 'https://example.com/',
-            'user-agent' => 'Mozilla/5.0'
+            'user-agent' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko'
         ])->get( '/track' );
 
         // Assert
-        $this->assertDatabaseHas( 'user_agents', [ 'name' => 'Mozilla/5.0' ] );
-        $userAgent = UserAgent::where('name', 'Mozilla/5.0')->firstOrFail();
+        $this->assertDatabaseHas( 'user_agents', [
+            'name' => 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko',
+            'is_bot' => 0,
+            'browser_type' => 'browser',
+            'browser_name' => 'Internet Explorer',
+            'browser_version' => '11.0'
+        ] );
+        $userAgent = UserAgent::where('name', 'Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; rv:11.0) like Gecko')->firstOrFail();
         $this->assertDatabaseHas( 'views', [ 'site_id' => $site->id, 'user_agent_id' => $userAgent->id ]);
     }
 
