@@ -15,7 +15,7 @@ class UserAgent extends Model
 
     function addDetails() {
 
-        if ($this->browser_type) {
+        if ($this->browser_name) {
             return $this;
         }
 
@@ -26,19 +26,19 @@ class UserAgent extends Model
         $this->is_bot = $dd->isBot();
         if ($dd->isBot()) {
             $bot = $dd->getBot();
-            $this->browser_type = $bot['category'];
+            $this->browser_type = isset($bot['category']) ? $bot['category'] : null;
             $this->browser_name = $bot['name'];
         }
         if ($client) {
-            $this->browser_type = $client['type'];
+            $this->browser_type = isset($client['type']) ? $client['type'] : null;
             $this->browser_name = $client['name'];
-            $this->browser_version = $client['version'];
+            $this->browser_version = isset($client['version']) ? $client['version'] : null;
         }
         $os = $dd->getOs();
         if ($os) {
-            $this->os_name = $os['name'];
-            $this->os_version = $os['version'];
-            $this->os_platform = $os['platform'];
+            $this->os_name = isset($os['name']) ? $os['name'] : null;
+            $this->os_version = isset($os['version']) ? $os['version'] : null;
+            $this->os_platform = isset($os['platform']) ? $os['platform'] : null;
         }
 
         $this->save();
