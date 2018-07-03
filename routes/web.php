@@ -41,7 +41,8 @@ Route::get('/track/', 'ViewController@track');
  */
 
  Route::group( [ 'prefix' => '/api/v1', 'middleware' => 'auth' ], function () {
-    
+
+    Route::get('/site/{site}/top-pages/day', 'TopPagesApiController@showDay');
     Route::get('/site/{site}/top-pages/week', 'TopPagesApiController@showWeek');
     Route::get('/site/{site}/top-pages', 'TopPagesApiController@show');
 
