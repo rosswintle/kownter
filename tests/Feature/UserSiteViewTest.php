@@ -22,6 +22,7 @@ class UserSiteViewTest extends TestCase
         // Arrange
         $site = factory(\App\Site::class)->create();
         $userAgent = factory(\App\UserAgent::class)->create();
+        $userAgent->addDetails();
         $page = factory(\App\Page::class)->create();
 
         $view = factory(\App\View::class)->make();
@@ -41,7 +42,6 @@ class UserSiteViewTest extends TestCase
         // Assert
         $response->assertStatus(200);
         $response->assertSee( $page->url );
-        $response->assertSee( $userAgent->name );
     }
 
     /** @test */
