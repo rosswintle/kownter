@@ -11,7 +11,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.8.*",
         "laravel/tinker": "^1.0",
-        "piwik/device-detector": "^3.12"
+        "matomo/device-detector": "^4.3"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
